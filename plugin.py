@@ -1,5 +1,6 @@
 from hansken_extraction_plugin.api.extraction_plugin import ExtractionPlugin
 from hansken_extraction_plugin.api.plugin_info import Author, MaturityLevel, PluginId, PluginInfo, PluginResources
+from hansken_extraction_plugin.decorators.transformer import transformer
 from hansken_extraction_plugin.runtime.extraction_plugin_runner import run_with_hanskenpy
 from logbook import Logger
 
@@ -26,9 +27,16 @@ class Plugin(ExtractionPlugin):
         log.info(f"processing trace {trace.get('name')}")
         # Add your plugin implementation here
 
+    # @Transformer enables the HANSKEN to execute code in the plugin
+    # The transformer can be found in when you expand the plugin in the extraction tools
+    # the transformers can be accessed with the /tools/transformers URL in HANSKEN
+    @transformer
+    def example_transformer(self, number: int) -> int:
+        return number + 1
 
 if __name__ == '__main__':
     # optional main method to run your plugin with Hansken.py
     # see detail at:
     #  https://netherlandsforensicinstitute.github.io/hansken-extraction-plugin-sdk-documentation/latest/dev/python/hanskenpy.html
     run_with_hanskenpy(Plugin)
+
